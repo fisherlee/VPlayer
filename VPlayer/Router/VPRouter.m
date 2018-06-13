@@ -45,19 +45,14 @@
         sbId = storyboard[0];
         UIViewController *svc = (UIViewController *)source;
         vc = [svc.storyboard instantiateViewControllerWithIdentifier:sbId];
-    }
-    else if ([storyboard count] == 2) {
+    }else if ([storyboard count] == 2) {
         UIStoryboard *sb = [UIStoryboard storyboardWithName:storyboard[0] bundle:nil];
         sbId = storyboard[1];
         vc = [sb instantiateViewControllerWithIdentifier:sbId];
-    }
-    else {
+    }else {
         return;
     }
-    
 
-    
-    
     if (type == 0) {
         id nav_class = [source parentViewController];
         if (![nav_class isKindOfClass:[UINavigationController class]]) {

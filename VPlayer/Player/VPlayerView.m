@@ -13,13 +13,14 @@
 @interface VPlayerView()
 
 @property (strong, nonatomic) AVPlayer *player;//播放器
-@property (strong, nonatomic) AVPlayerItem *playlerItem;//播放单元
+@property (strong, nonatomic) AVPlayerItem *playerItem;//播放单元
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;//播放界面（layer）
 @property (strong, nonatomic) UISlider *avSlider;//用来现实视频的播放进度，并且通过它来控制视频的快进快退。
 @property (strong, nonatomic) UIView *controlView;
 @property (strong, nonatomic) UIButton *backButton;
 @property (strong, nonatomic) UIScrollView *itemsScrollView;
-
+@property (strong, nonatomic) UILabel *timeLabel;
+@property (strong, nonatomic)  id timeObser;
 @property (assign, nonatomic) BOOL isReadToPlay;//用来判断当前视频是否准备好播放。
 
 
@@ -35,10 +36,10 @@
         
         NSURL *mediaURL = [NSURL URLWithString:@"http://bos.nj.bpc.baidu.com/tieba-smallvideo/11772_3c435014fb2dd9a5fd56a57cc369f6a0.mp4"];
         AVURLAsset *urlAsset = [AVURLAsset assetWithURL:mediaURL];
-        _playlerItem = [AVPlayerItem playerItemWithAsset:urlAsset];
-        [_playlerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:NULL];
-        [_playlerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
-        _player = [AVPlayer playerWithPlayerItem:_playlerItem];
+        _playerItem = [AVPlayerItem playerItemWithAsset:urlAsset];
+        [_playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:NULL];
+        [_playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
+        _player = [AVPlayer playerWithPlayerItem:_playerItem];
         
         _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
         [self.layer addSublayer:self.playerLayer];
@@ -106,6 +107,30 @@
         make.bottom.equalTo(window.mas_bottom).offset(0);
         make.height.mas_equalTo(100);
     }];
+    
+    _timeLabel = [[UILabel alloc] init];
+    _timeLabel.adjustsFontSizeToFitWidth = YES;
+    _timeLabel.textAlignment = NSTextAlignmentCenter;
+    _timeLabel.font = [UIFont systemFontOfSize:13];
+    _timeLabel.textColor = [UIColor whiteColor];
+    [window addSubview:_timeLabel];
+    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(window.mas_centerX).offset(0);
+        make.top.equalTo(window.mas_top).offset(20);
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(30);
+    }];
+    
+    __weak typeof(self) weakSelf = self;
+    _timeObser = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:nil usingBlock:^(CMTime time) {
+        AVPlayerItem *item = weakSelf.playerItem;
+        if (item) {
+            NSInteger currentTime = item.currentTime.value/item.currentTime.timescale;
+            NSLog(@"当前播放时间：%ld",currentTime);
+            weakSelf.timeLabel.text = [NSString stringWithFormat:@"%@", @(currentTime)];
+        }
+    }];
+    
 }
 
 - (void)resetPlayControlView
@@ -121,6 +146,9 @@
     }
     if (_itemsScrollView) {
         [_itemsScrollView removeFromSuperview];
+    }
+    if (_timeLabel) {
+        [_timeLabel removeFromSuperview];
     }
 }
 
@@ -141,6 +169,7 @@
 - (void)backAction:(UIButton *)button
 {
     [self resetPlayControlView];
+    [self.player removeTimeObserver:_timeObser];
     if (self.backBlock) {
         self.backBlock(0);
     }
@@ -158,7 +187,7 @@
     //slider的value值为视频的时间
     float seconds = self.avSlider.value;
     //让视频从指定的CMTime对象处播放。
-    CMTime startTime = CMTimeMakeWithSeconds(seconds, self.playlerItem.currentTime.timescale);
+    CMTime startTime = CMTimeMakeWithSeconds(seconds, self.playerItem.currentTime.timescale);
     //让视频从指定处播放
     [self.player seekToTime:startTime completionHandler:^(BOOL finished) {
         if (finished) {
@@ -173,9 +202,13 @@
 {
 
     AVPlayerItem *playerItem = (AVPlayerItem *)object;
+    if (playerItem == nil) {
+        return;
+    }
     if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
-        NSLog(@"_playlerItem.loadedTimeRanges:%@", playerItem.loadedTimeRanges);
-        [self.playlerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+        NSInteger total = floor(playerItem.asset.duration.value * 1.0/playerItem.asset.duration.timescale);
+        NSLog(@"_playlerItem.loadedTimeRanges[%@]:%@", @(total), playerItem.loadedTimeRanges);
+        [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
     }
     else if ([keyPath isEqualToString:@"status"]) {
         AVPlayerItem *playerItem = (AVPlayerItem *)object;
