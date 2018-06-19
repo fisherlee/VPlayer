@@ -10,17 +10,21 @@
 #import<AVFoundation/AVFoundation.h>
 #import "Masonry.h"
 
-@interface VPlayerView()
+@interface VPlayerView()<VPlayerControlViewDelegate>
+
+//@property (nonatomic, strong) AVAssetImageGenerator *imageGenertor;//视频缩略图
 
 @property (strong, nonatomic) AVPlayer *player;//播放器
 @property (strong, nonatomic) AVPlayerItem *playerItem;//播放单元
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;//播放界面（layer）
-@property (strong, nonatomic) UISlider *avSlider;//用来现实视频的播放进度，并且通过它来控制视频的快进快退。
-@property (strong, nonatomic) UIView *controlView;
-@property (strong, nonatomic) UIButton *backButton;
-@property (strong, nonatomic) UIScrollView *itemsScrollView;
-@property (strong, nonatomic) UILabel *timeLabel;
-@property (strong, nonatomic)  id timeObser;
+@property (nonatomic, strong) AVURLAsset *urlAsset;
+
+@property (nonatomic, strong) UIView *fatherView;
+
+@property (nonatomic, strong) VPlayerModel        *videoModel;
+@property (nonatomic, strong) VPlayerControlView *controlView;
+
+@property (strong, nonatomic) id timeObser;
 @property (assign, nonatomic) BOOL isReadToPlay;//用来判断当前视频是否准备好播放。
 
 
@@ -33,18 +37,6 @@
     self = [super init];
     if (self) {
         self.backgroundColor = [UIColor blackColor];
-        
-        NSURL *mediaURL = [NSURL URLWithString:@"http://bos.nj.bpc.baidu.com/tieba-smallvideo/11772_3c435014fb2dd9a5fd56a57cc369f6a0.mp4"];
-        AVURLAsset *urlAsset = [AVURLAsset assetWithURL:mediaURL];
-        _playerItem = [AVPlayerItem playerItemWithAsset:urlAsset];
-        [_playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:NULL];
-        [_playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
-        _player = [AVPlayer playerWithPlayerItem:_playerItem];
-        
-        _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        [self.layer addSublayer:self.playerLayer];
-        
-        [_player play];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPlayerControlView:)];
         [self addGestureRecognizer:tap];
@@ -60,96 +52,129 @@
     self.playerLayer.frame = self.bounds;
 }
 
+//加载播放
+- (void)playerWithView:(UIView *)view videoModel:(VPlayerModel *)model{
+    _fatherView = view;
+    [self addPlayerToFatherView:view];
+    
+    self.videoModel = model;
+}
+
+//player添加到父视图上
+- (void)addPlayerToFatherView:(UIView *)view{
+    if (self.window) {
+        [self removeFromSuperview];
+    }
+    
+    [view addSubview:self];
+    [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_offset(UIEdgeInsetsZero);
+    }];
+    
+    if (!_controlView) {
+        _controlView = [[VPlayerControlView alloc] init];
+        _controlView.delegate = self;
+        //_controlView.backgroundColor = [UIColor blackColor];
+        [self addSubview:_controlView];
+        
+        [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_offset(UIEdgeInsetsZero);
+        }];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenPlayerControlView:)];
+        [_controlView addGestureRecognizer:tap];
+    }
+}
+
+- (void)addPlayerItemObserVer{
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:NULL];
+    [self.player addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)addNotification{
+    //播放完成
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerMovieFinish:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+}
+
+
+- (void)play
+{
+    [self.controlView v_playerPlayingState:YES];
+    [_player play];
+}
+
+- (void)pause
+{
+    [self.controlView v_playerPlayingState:NO];
+    [_player pause];
+}
+
+- (void)setVideoModel:(VPlayerModel *)videoModel
+{
+    _videoModel = videoModel;
+    [self configVPlayer];
+}
+
+- (void)setState:(VPlayerState)state
+{
+    _state = state;
+    if (state == VPlayerStateFailed) {
+        NSError *error = [self.playerItem error];
+        NSLog(@"播放失败: %@", error);
+    }
+}
+
+/**
+ 添加计时器
+ */
+- (void)addTimeObserve{
+    __weak __typeof(self) weakSelf = self;
+    self.timeObser = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:nil usingBlock:^(CMTime time) {
+        AVPlayerItem *item = weakSelf.playerItem;
+        //两种方式求绝对时间
+        NSInteger currentTime = item.currentTime.value/item.currentTime.timescale;
+        NSInteger totalTime   = (NSInteger)CMTimeGetSeconds(item.duration);
+        CGFloat value = CMTimeGetSeconds(item.currentTime)/CMTimeGetSeconds(item.duration);
+        [weakSelf.controlView v_playerCurrentTime:currentTime totalTime:totalTime value:value];
+    }];
+}
+
+/**
+ 配置播放器
+ */
+- (void)configVPlayer{
+    self.urlAsset = [AVURLAsset assetWithURL:self.videoModel.videoUrl];
+    self.playerItem = [AVPlayerItem playerItemWithAsset:self.urlAsset];
+    self.player= [AVPlayer playerWithPlayerItem:self.playerItem];
+    
+    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+    //要把playerlayer加到视图layer之上
+    [self.layer insertSublayer:self.playerLayer atIndex:0];
+    
+    [self addPlayerItemObserVer];
+    
+    [self addNotification];
+    
+    //添加计时器
+    [self addTimeObserve];
+}
+
+- (void)resetPlayer{
+    //移除监听
+    if (self.timeObser) {
+        [self.player removeTimeObserver:self.timeObser];
+        self.timeObser = nil;
+    }
+}
+
 - (void)setupPlayerControlView
 {
-    _controlView = [[UIView alloc] init];
-    _controlView.backgroundColor = [UIColor clearColor];
-    _controlView.alpha = 1;
-    [self addSubview:_controlView];
-    [_controlView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsZero);
-    }];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenPlayerControlView:)];
-    [_controlView addGestureRecognizer:tap];
-    
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    
-    _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_backButton setTitle:@"Back" forState:UIControlStateNormal];
-    [_backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_backButton addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
-    [window addSubview:_backButton];
-    [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(window.mas_left).offset(15);
-        make.top.equalTo(window.mas_top).offset(20);
-        make.width.mas_equalTo(60);
-        make.height.mas_equalTo(30);
-    }];
-    
-    _avSlider = [[UISlider alloc] init];
-    [_avSlider addTarget:self action:@selector(avSliderAction) forControlEvents:
-     UIControlEventTouchUpInside|UIControlEventTouchCancel|UIControlEventTouchUpOutside];
-    [window addSubview:_avSlider];
-    [_avSlider mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(window.mas_left).offset(0);
-        make.right.equalTo(window.mas_right).offset(0);
-        make.bottom.equalTo(window.mas_bottom).offset(-100);
-        make.height.mas_equalTo(30);
-    }];
-    
-    _itemsScrollView = [[UIScrollView alloc] init];
-    _itemsScrollView.backgroundColor = [UIColor lightGrayColor];
-    [window addSubview:_itemsScrollView];
-    [_itemsScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(window.mas_left).offset(0);
-        make.right.equalTo(window.mas_right).offset(0);
-        make.bottom.equalTo(window.mas_bottom).offset(0);
-        make.height.mas_equalTo(100);
-    }];
-    
-    _timeLabel = [[UILabel alloc] init];
-    _timeLabel.adjustsFontSizeToFitWidth = YES;
-    _timeLabel.textAlignment = NSTextAlignmentCenter;
-    _timeLabel.font = [UIFont systemFontOfSize:13];
-    _timeLabel.textColor = [UIColor whiteColor];
-    [window addSubview:_timeLabel];
-    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(window.mas_centerX).offset(0);
-        make.top.equalTo(window.mas_top).offset(20);
-        make.width.mas_equalTo(100);
-        make.height.mas_equalTo(30);
-    }];
-    
-    __weak typeof(self) weakSelf = self;
-    _timeObser = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:nil usingBlock:^(CMTime time) {
-        AVPlayerItem *item = weakSelf.playerItem;
-        if (item) {
-            NSInteger currentTime = item.currentTime.value/item.currentTime.timescale;
-            NSLog(@"当前播放时间：%ld",currentTime);
-            weakSelf.timeLabel.text = [NSString stringWithFormat:@"%@", @(currentTime)];
-        }
-    }];
-    
+   
 }
 
 - (void)resetPlayControlView
 {
-    if (_controlView) {
-        [_controlView removeFromSuperview];
-    }
-    if (_backButton) {
-        [_backButton removeFromSuperview];
-    }
-    if (_avSlider) {
-        [_avSlider removeFromSuperview];
-    }
-    if (_itemsScrollView) {
-        [_itemsScrollView removeFromSuperview];
-    }
-    if (_timeLabel) {
-        [_timeLabel removeFromSuperview];
-    }
+  
 }
 
 - (void)showPlayerControlView:(UITapGestureRecognizer *)gr
@@ -183,9 +208,9 @@
     }
 }
 
-- (void)avSliderAction{
+- (void)videoSliderAction:(UISlider *)slider{
     //slider的value值为视频的时间
-    float seconds = self.avSlider.value;
+    float seconds = slider.value;
     //让视频从指定的CMTime对象处播放。
     CMTime startTime = CMTimeMakeWithSeconds(seconds, self.playerItem.currentTime.timescale);
     //让视频从指定处播放
@@ -200,42 +225,89 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-
-    AVPlayerItem *playerItem = (AVPlayerItem *)object;
-    if (playerItem == nil) {
-        return;
-    }
-    if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
-        NSInteger total = floor(playerItem.asset.duration.value * 1.0/playerItem.asset.duration.timescale);
-        NSLog(@"_playlerItem.loadedTimeRanges[%@]:%@", @(total), playerItem.loadedTimeRanges);
-        [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
-    }
-    else if ([keyPath isEqualToString:@"status"]) {
+    if ([object isKindOfClass:[AVPlayerItem class]]) {
         AVPlayerItem *playerItem = (AVPlayerItem *)object;
-        NSLog(@"播放开始");
-        //取出status的新值
-        AVPlayerItemStatus status = [change[NSKeyValueChangeNewKey] intValue];
-        switch (status) {
-                case AVPlayerItemStatusFailed:
-                NSLog(@"item 有误");
-                self.isReadToPlay = NO;
-                break;
-                case AVPlayerItemStatusReadyToPlay:
-                NSLog(@"准好播放了");
-                self.isReadToPlay = YES;
-                self.avSlider.maximumValue = playerItem.duration.value/playerItem.duration.timescale;
-                break;
-                case AVPlayerItemStatusUnknown:
-                NSLog(@"视频资源出现未知错误");
-                self.isReadToPlay = NO;
-                break;
-            default:
-                break;
+        if (playerItem == nil) {
+            return;
         }
-        //移除监听（观察者）
-        [object removeObserver:self forKeyPath:@"status"];
+        
+        if ([keyPath isEqualToString:@"status"]) {
+            NSLog(@"播放状态");
+            AVPlayerItemStatus status = [change[NSKeyValueChangeNewKey] intValue];
+            if (status == AVPlayerItemStatusReadyToPlay) {
+                NSLog(@"准备播放");
+                [self play];
+            }else {
+                NSLog(@"error 视频错误:%@", @(status));
+                self.isReadToPlay = NO;
+            }
+            //移除监听（观察者）
+            [object removeObserver:self forKeyPath:@"status"];
+        }
+    }else if ([object isKindOfClass:[AVPlayer class]]){
+        if ([keyPath isEqualToString:@"rate"]) {
+            AVPlayer *player = (AVPlayer *)object;
+            if (player.rate == 0) {
+                //正在暂停
+            }else if (player.rate == 1){
+                //正在播放
+            }
+            [object removeObserver:self forKeyPath:@"rate"];
+        }
     }
 }
 
+#pragma mark - 通知
+
+/**
+ 播放完成的通知
+ */
+- (void)playerMovieFinish:(NSNotification *)noti{
+    
+}
+
+
+#pragma mark - VPlayerControlViewDelegate
+
+- (void)v_playerPlayButtonAction{
+    if (self.state == VPlayerStatePlaying) {
+        [self pause];
+    }else if (self.state == VPlayerStatePause){
+        [self play];
+    }
+
+}
+
+/**
+ 拖动进度条
+ value 拖动
+ */
+- (void)v_playerDraggedSlider:(CGFloat)value
+{
+    NSInteger drageSecond = CMTimeGetSeconds(self.playerItem.duration)*value;
+    [self seekToTime:drageSecond completionHandler:nil];
+}
+
+- (void)v_playerDraggingSlider:(CGFloat)value
+{
+    
+}
+
+- (void)seekToTime:(NSInteger)drageSecond completionHandler:(void (^)(BOOL))completionHandler{
+    
+    if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+        __weak __typeof(self) weakSelf = self;
+        
+        [self.player seekToTime:CMTimeMake(drageSecond, 1) toleranceBefore:CMTimeMake(1, 1) toleranceAfter:CMTimeMake(1, 1) completionHandler:^(BOOL finished) {
+            if (completionHandler) {
+                completionHandler(finished);
+            }
+            [weakSelf.player play];
+        }];
+    }
+    
+}
+
+#pragma mark - private
 
 @end

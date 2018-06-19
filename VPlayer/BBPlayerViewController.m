@@ -7,7 +7,7 @@
 //
 
 #import "BBPlayerViewController.h"
-#import "VPlayerView.h"
+#import "VPlayer.h"
 #import "Masonry.h"
 
 @interface BBPlayerViewController ()
@@ -33,11 +33,20 @@
 
     
     //---
-    _playerView = [[VPlayerView alloc] init];
-    [self.view addSubview:_playerView];
-    [_playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIView *fatherView = [[UIView alloc] init];
+    [self.view addSubview:fatherView];
+    
+    [fatherView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
+    
+    VPlayerModel *videoModel = [[VPlayerModel alloc] init];
+    videoModel.title = @"电影鉴赏";
+    videoModel.videoUrl = [NSURL URLWithString:@"http://bos.nj.bpc.baidu.com/tieba-smallvideo/11772_3c435014fb2dd9a5fd56a57cc369f6a0.mp4"];
+    
+    
+    _playerView = [[VPlayerView alloc] init];
+    [_playerView playerWithView:fatherView videoModel:videoModel];
 
     __weak typeof(self) weakSelf = self;
     _playerView.backBlock = ^(NSInteger status) {

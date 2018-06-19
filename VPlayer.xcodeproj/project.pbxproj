@@ -21,6 +21,8 @@
 		D0B24EE620932B3C000E963F /* UIViewController+Node.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EE520932B3C000E963F /* UIViewController+Node.m */; };
 		D0B24EF020940D2E000E963F /* UIApplication+Node.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EEF20940D2E000E963F /* UIApplication+Node.m */; };
 		D0B24EF320940D63000E963F /* ABCRuntimeExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EF220940D63000E963F /* ABCRuntimeExchange.m */; };
+		D0C4564320D8DDD700F80C77 /* VPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C4564220D8DDD700F80C77 /* VPlayerModel.m */; };
+		D0C4564620D8DDE800F80C77 /* VPlayerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C4564520D8DDE800F80C77 /* VPlayerControlView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,11 @@
 		D0B24EEF20940D2E000E963F /* UIApplication+Node.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Node.m"; sourceTree = "<group>"; };
 		D0B24EF120940D63000E963F /* ABCRuntimeExchange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ABCRuntimeExchange.h; sourceTree = "<group>"; };
 		D0B24EF220940D63000E963F /* ABCRuntimeExchange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ABCRuntimeExchange.m; sourceTree = "<group>"; };
+		D0C4564120D8DDD700F80C77 /* VPlayerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerModel.h; sourceTree = "<group>"; };
+		D0C4564220D8DDD700F80C77 /* VPlayerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPlayerModel.m; sourceTree = "<group>"; };
+		D0C4564420D8DDE800F80C77 /* VPlayerControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerControlView.h; sourceTree = "<group>"; };
+		D0C4564520D8DDE800F80C77 /* VPlayerControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPlayerControlView.m; sourceTree = "<group>"; };
+		D0C4564720D8DE3E00F80C77 /* VPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayer.h; sourceTree = "<group>"; };
 		DE5B5C6F12BDC6DBC324C0C7 /* Pods-VPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VPlayer/Pods-VPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,8 +94,13 @@
 		D095445B20BBF36000D557E8 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				D0C4564720D8DE3E00F80C77 /* VPlayer.h */,
+				D0C4564120D8DDD700F80C77 /* VPlayerModel.h */,
+				D0C4564220D8DDD700F80C77 /* VPlayerModel.m */,
 				D095445C20BBF39000D557E8 /* VPlayerView.h */,
 				D095445D20BBF39000D557E8 /* VPlayerView.m */,
+				D0C4564420D8DDE800F80C77 /* VPlayerControlView.h */,
+				D0C4564520D8DDE800F80C77 /* VPlayerControlView.m */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -284,8 +296,10 @@
 				D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */,
 				D0B24EE620932B3C000E963F /* UIViewController+Node.m in Sources */,
 				D003179420B7A9EB00B17C8E /* UIViewController+Router.m in Sources */,
+				D0C4564320D8DDD700F80C77 /* VPlayerModel.m in Sources */,
 				D0B24EF320940D63000E963F /* ABCRuntimeExchange.m in Sources */,
 				D0B24EB92092F028000E963F /* ViewController.m in Sources */,
+				D0C4564620D8DDE800F80C77 /* VPlayerControlView.m in Sources */,
 				D0B24EC42092F029000E963F /* main.m in Sources */,
 				D095445E20BBF39000D557E8 /* VPlayerView.m in Sources */,
 				D0B24EF020940D2E000E963F /* UIApplication+Node.m in Sources */,
