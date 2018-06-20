@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol VPlayerControlViewDelegate <NSObject>
 
 @optional

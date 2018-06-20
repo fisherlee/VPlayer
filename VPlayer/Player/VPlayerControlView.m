@@ -29,13 +29,14 @@
 {
     self = [super init];
     if (self) {
-        [self addSubview:self.bottomView];
+        [self addSubview:self.controlView];
         [self addSubview:self.backButton];
-        [self.bottomView addSubview:self.startButton];
-        [self.bottomView addSubview:self.timeLabel];
-        [self.bottomView addSubview:self.totalTimeLabel];
-        [self.bottomView addSubview:self.videoSlider];
-        [self.bottomView addSubview:self.itemsView];
+        [self addSubview:self.bottomView];
+        [self.controlView addSubview:self.startButton];
+        [self.controlView addSubview:self.timeLabel];
+        [self.controlView addSubview:self.totalTimeLabel];
+        [self.controlView addSubview:self.videoSlider];
+        [self.controlView addSubview:self.itemsView];
         
         //添加约束
         [self makeSubViewConstraints];
@@ -50,38 +51,40 @@
     CGFloat items_height = 100;
     CGFloat silder_height = 30;
     
+    //---
     [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(15);
         make.top.equalTo(self.mas_top).offset(20);
         make.width.mas_equalTo(60);
         make.height.mas_equalTo(30);
     }];
- 
-    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    //---
+    [self.controlView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(0);
         make.right.equalTo(self.mas_right).offset(0);
         make.bottom.equalTo(self.mas_bottom).offset(0);
-        make.height.mas_equalTo(b_height);
+        make.height.mas_equalTo(silder_height);
     }];
+
     
     [self.startButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.bottomView.mas_left).offset(5);
-        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-items_height);
+        make.left.equalTo(self.controlView.mas_left).offset(5);
+        make.bottom.equalTo(self.controlView.mas_bottom).offset(-items_height);
         make.width.mas_equalTo(50);
         make.height.mas_equalTo(30);
     }];
     
-    
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.startButton.mas_right).offset(5);
-        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-items_height);
+        make.bottom.equalTo(self.controlView.mas_bottom).offset(-items_height);
         make.width.mas_equalTo(60);
         make.height.mas_equalTo(silder_height);
     }];
     
     [self.totalTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.bottomView.mas_right).offset(-5);
-        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-items_height);
+        make.right.equalTo(self.controlView.mas_right).offset(-5);
+        make.bottom.equalTo(self.controlView.mas_bottom).offset(-items_height);
         make.width.mas_equalTo(60);
         make.height.mas_equalTo(silder_height);
     }];
@@ -93,7 +96,15 @@
         make.bottom.equalTo(self.mas_bottom).offset(-100);
         make.height.mas_equalTo(30);
     }];
-
+    
+    //---
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(0);
+        make.right.equalTo(self.mas_right).offset(0);
+        make.bottom.equalTo(self.mas_bottom).offset(0);
+        make.height.mas_equalTo(b_height);
+    }];
+    
     [self.itemsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bottomView.mas_left).offset(0);
         make.right.equalTo(self.bottomView.mas_right).offset(0);
@@ -167,6 +178,14 @@
 
 
 #pragma mark - private
+
+- (UIView *)controlView
+{
+    if (!_controlView) {
+        _controlView = [[UIView alloc] init];
+    }
+    return _controlView;
+}
 
 - (UISlider *)videoSlider
 {
