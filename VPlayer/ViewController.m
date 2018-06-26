@@ -7,9 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "VPRouter.h"
-//#import "BBPlayerViewController.h"
-#import "UIViewController+Router.h"
 
 static NSString * const play_url_string = @"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
@@ -33,27 +30,17 @@ static NSString * const play_url_string = @"http://clips.vorwaerts-gmbh.de/big_b
 
 - (IBAction)avPlayerVCAction:(id)sender
 {
-
+    [self goToTarget:@"AVPViewController" storyboard:@"Main|kAVPStoryboardId" operation:0 params:@{@"title":@"AVP"}];
 }
 
 - (IBAction)avPlayerCustomAction:(id)sender
 {
-    [[VPRouter shareInstance] goToStoryboardType:1
-                                          target:@"BBPlayerViewController"
-                                          source:self
-                                      storyboard:@[@"kBBPlayerStoryboardId"]
-                                          params:nil];
-    //BBPlayerViewController *bbPlayer = [[BBPlayerViewController alloc] init];
-    //[self presentViewController:bbPlayer animated:YES completion:nil];
+    [self goToTarget:@"BBPlayerViewController" storyboard:@"kBBPlayerStoryboardId" operation:1 params:nil];
 }
 
 - (IBAction)zfPlayerCustomAction:(id)sender
 {
-    [[VPRouter shareInstance] goToStoryboardType:0
-                                          target:@"MoviePlayerViewController"
-                                          source:self
-                                      storyboard:@[@"Video", @"kMoviePlayerStoryboardId"]
-                                          params:nil];
+    [self goToTarget:@"AVPViewController" storyboard:@"Main|kAVPStoryboardId" operation:0 params:@{@"title":@"ZFP"}];
 }
 
 @end

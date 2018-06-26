@@ -30,6 +30,7 @@
     if (target_class == nil) {
         return;
     }
+    
     Class target_super_class= [target_class superclass];
     NSString *target_super = NSStringFromClass(target_super_class);
     if (![target_super isEqualToString:@"UIViewController"]) {

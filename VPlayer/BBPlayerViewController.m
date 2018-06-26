@@ -7,8 +7,7 @@
 //
 
 #import "BBPlayerViewController.h"
-#import "VPlayer.h"
-#import "Masonry.h"
+
 
 @interface BBPlayerViewController ()
 

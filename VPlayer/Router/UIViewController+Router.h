@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface UIViewController (Router)
 
 @property (nonatomic, strong) NSDictionary *router_params;
+
+- (void)goToTarget:(NSString *)target storyboard:(NSString *)storyboard operation:(NSInteger)operation params:(NSDictionary *)params;
+
 
 @end

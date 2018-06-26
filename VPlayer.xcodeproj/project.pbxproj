@@ -10,6 +10,8 @@
 		B6CFFAD254E00FECC3955C01 /* libPods-VPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 996760F75DE0FC7ECBE8EF4F /* libPods-VPlayer.a */; };
 		D003179020B7A87000B17C8E /* VPRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = D003178F20B7A87000B17C8E /* VPRouter.m */; };
 		D003179420B7A9EB00B17C8E /* UIViewController+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = D003179320B7A9EB00B17C8E /* UIViewController+Router.m */; };
+		D04B48D120E0E6DB00857A07 /* ZFPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B48D020E0E6DB00857A07 /* ZFPViewController.m */; };
+		D04B48D420E0E82000857A07 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B48D320E0E82000857A07 /* BaseViewController.m */; };
 		D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */; };
 		D095445E20BBF39000D557E8 /* VPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D095445D20BBF39000D557E8 /* VPlayerView.m */; };
 		D0B24EB62092F028000E963F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EB52092F028000E963F /* AppDelegate.m */; };
@@ -23,6 +25,7 @@
 		D0B24EF320940D63000E963F /* ABCRuntimeExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EF220940D63000E963F /* ABCRuntimeExchange.m */; };
 		D0C4564320D8DDD700F80C77 /* VPlayerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C4564220D8DDD700F80C77 /* VPlayerModel.m */; };
 		D0C4564620D8DDE800F80C77 /* VPlayerControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C4564520D8DDE800F80C77 /* VPlayerControlView.m */; };
+		D0D63F7620E0EE950092B7B8 /* AVPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D63F7520E0EE950092B7B8 /* AVPViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,11 @@
 		D003178F20B7A87000B17C8E /* VPRouter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPRouter.m; sourceTree = "<group>"; };
 		D003179220B7A9EB00B17C8E /* UIViewController+Router.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Router.h"; sourceTree = "<group>"; };
 		D003179320B7A9EB00B17C8E /* UIViewController+Router.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Router.m"; sourceTree = "<group>"; };
+		D0196FF620E21CD800FCE82F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		D04B48CF20E0E6DB00857A07 /* ZFPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFPViewController.h; sourceTree = "<group>"; };
+		D04B48D020E0E6DB00857A07 /* ZFPViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFPViewController.m; sourceTree = "<group>"; };
+		D04B48D220E0E82000857A07 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		D04B48D320E0E82000857A07 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		D0625BF420CF9B8F00AEFE87 /* BBPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBPlayerViewController.h; sourceTree = "<group>"; };
 		D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBPlayerViewController.m; sourceTree = "<group>"; };
 		D095445C20BBF39000D557E8 /* VPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerView.h; sourceTree = "<group>"; };
@@ -57,6 +65,8 @@
 		D0C4564420D8DDE800F80C77 /* VPlayerControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerControlView.h; sourceTree = "<group>"; };
 		D0C4564520D8DDE800F80C77 /* VPlayerControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPlayerControlView.m; sourceTree = "<group>"; };
 		D0C4564720D8DE3E00F80C77 /* VPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayer.h; sourceTree = "<group>"; };
+		D0D63F7420E0EE950092B7B8 /* AVPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVPViewController.h; sourceTree = "<group>"; };
+		D0D63F7520E0EE950092B7B8 /* AVPViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AVPViewController.m; sourceTree = "<group>"; };
 		DE5B5C6F12BDC6DBC324C0C7 /* Pods-VPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VPlayer/Pods-VPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,15 +141,22 @@
 				D095445B20BBF36000D557E8 /* Player */,
 				D0B24EB42092F028000E963F /* AppDelegate.h */,
 				D0B24EB52092F028000E963F /* AppDelegate.m */,
+				D04B48D220E0E82000857A07 /* BaseViewController.h */,
+				D04B48D320E0E82000857A07 /* BaseViewController.m */,
 				D0B24EB72092F028000E963F /* ViewController.h */,
 				D0B24EB82092F028000E963F /* ViewController.m */,
 				D0625BF420CF9B8F00AEFE87 /* BBPlayerViewController.h */,
 				D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */,
+				D0D63F7420E0EE950092B7B8 /* AVPViewController.h */,
+				D0D63F7520E0EE950092B7B8 /* AVPViewController.m */,
+				D04B48CF20E0E6DB00857A07 /* ZFPViewController.h */,
+				D04B48D020E0E6DB00857A07 /* ZFPViewController.m */,
 				D0B24EBA2092F028000E963F /* Main.storyboard */,
 				D0B24EBD2092F029000E963F /* Assets.xcassets */,
 				D0B24EBF2092F029000E963F /* LaunchScreen.storyboard */,
 				D0B24EC22092F029000E963F /* Info.plist */,
 				D0B24EC32092F029000E963F /* main.m */,
+				D0196FF620E21CD800FCE82F /* PrefixHeader.pch */,
 			);
 			path = VPlayer;
 			sourceTree = "<group>";
@@ -294,9 +311,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */,
+				D04B48D420E0E82000857A07 /* BaseViewController.m in Sources */,
+				D0D63F7620E0EE950092B7B8 /* AVPViewController.m in Sources */,
 				D0B24EE620932B3C000E963F /* UIViewController+Node.m in Sources */,
 				D003179420B7A9EB00B17C8E /* UIViewController+Router.m in Sources */,
 				D0C4564320D8DDD700F80C77 /* VPlayerModel.m in Sources */,
+				D04B48D120E0E6DB00857A07 /* ZFPViewController.m in Sources */,
 				D0B24EF320940D63000E963F /* ABCRuntimeExchange.m in Sources */,
 				D0B24EB92092F028000E963F /* ViewController.m in Sources */,
 				D0C4564620D8DDE800F80C77 /* VPlayerControlView.m in Sources */,
@@ -371,6 +391,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = VPlayer/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -427,6 +448,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = VPlayer/PrefixHeader.pch;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
