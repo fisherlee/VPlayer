@@ -1,17 +1,15 @@
 //
-//  VPlayerView.h
+//  VFullScreenPlayerView.h
 //  VPlayer
 //
-//  Created by liwei on 2018/5/28.
+//  Created by liwei on 2018/7/5.
 //  Copyright © 2018年 liwei. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "VPlayer.h"
 #import "VPlayerConfig.h"
 
-
-@interface VPlayerView : UIView
+@interface VFullScreenPlayerView : UIView
 
 @property (nonatomic, copy) VPlayerBackBlock backBlock;
 @property (nonatomic, assign) VPlayerState state;

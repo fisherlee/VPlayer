@@ -31,6 +31,8 @@
 
 @property (nonatomic, weak) id<VPlayerControlViewDelegate> delegate;
 
+- (instancetype)initWithFullScreen;
+
 /** 播放状态 */
 - (void)v_playerPlayingState:(BOOL)state;
 

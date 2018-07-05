@@ -10,7 +10,8 @@
 #define VPlayer_h
 
 #import "VPlayerModel.h"
-#import "VPlayerView.h"
 #import "VPlayerControlView.h"
+#import "VPlayerView.h"
+#import "VFullScreenPlayerView.h"
 
 #endif /* VPlayer_h */

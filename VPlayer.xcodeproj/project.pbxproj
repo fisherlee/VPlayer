@@ -14,6 +14,7 @@
 		D04B48D420E0E82000857A07 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B48D320E0E82000857A07 /* BaseViewController.m */; };
 		D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */; };
 		D095445E20BBF39000D557E8 /* VPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D095445D20BBF39000D557E8 /* VPlayerView.m */; };
+		D0996A2020EDB49D005666FB /* VFullScreenPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0996A1F20EDB49D005666FB /* VFullScreenPlayerView.m */; };
 		D0B24EB62092F028000E963F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EB52092F028000E963F /* AppDelegate.m */; };
 		D0B24EB92092F028000E963F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EB82092F028000E963F /* ViewController.m */; };
 		D0B24EBC2092F028000E963F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0B24EBA2092F028000E963F /* Main.storyboard */; };
@@ -44,6 +45,9 @@
 		D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBPlayerViewController.m; sourceTree = "<group>"; };
 		D095445C20BBF39000D557E8 /* VPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerView.h; sourceTree = "<group>"; };
 		D095445D20BBF39000D557E8 /* VPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPlayerView.m; sourceTree = "<group>"; };
+		D0996A1E20EDB49D005666FB /* VFullScreenPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullScreenPlayerView.h; sourceTree = "<group>"; };
+		D0996A1F20EDB49D005666FB /* VFullScreenPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VFullScreenPlayerView.m; sourceTree = "<group>"; };
+		D0996A2120EDB562005666FB /* VPlayerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerConfig.h; sourceTree = "<group>"; };
 		D0B24EB12092F028000E963F /* VPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B24EB42092F028000E963F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D0B24EB52092F028000E963F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -105,10 +109,13 @@
 			isa = PBXGroup;
 			children = (
 				D0C4564720D8DE3E00F80C77 /* VPlayer.h */,
+				D0996A2120EDB562005666FB /* VPlayerConfig.h */,
 				D0C4564120D8DDD700F80C77 /* VPlayerModel.h */,
 				D0C4564220D8DDD700F80C77 /* VPlayerModel.m */,
 				D095445C20BBF39000D557E8 /* VPlayerView.h */,
 				D095445D20BBF39000D557E8 /* VPlayerView.m */,
+				D0996A1E20EDB49D005666FB /* VFullScreenPlayerView.h */,
+				D0996A1F20EDB49D005666FB /* VFullScreenPlayerView.m */,
 				D0C4564420D8DDE800F80C77 /* VPlayerControlView.h */,
 				D0C4564520D8DDE800F80C77 /* VPlayerControlView.m */,
 			);
@@ -313,6 +320,7 @@
 				D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */,
 				D04B48D420E0E82000857A07 /* BaseViewController.m in Sources */,
 				D0D63F7620E0EE950092B7B8 /* AVPViewController.m in Sources */,
+				D0996A2020EDB49D005666FB /* VFullScreenPlayerView.m in Sources */,
 				D0B24EE620932B3C000E963F /* UIViewController+Node.m in Sources */,
 				D003179420B7A9EB00B17C8E /* UIViewController+Router.m in Sources */,
 				D0C4564320D8DDD700F80C77 /* VPlayerModel.m in Sources */,

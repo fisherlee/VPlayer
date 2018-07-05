@@ -11,7 +11,7 @@
 
 @interface BBPlayerViewController ()
 
-@property (strong, nonatomic) VPlayerView *playerView;
+@property (strong, nonatomic) VFullScreenPlayerView *playerView;
 
 @end
 
@@ -44,7 +44,7 @@
     videoModel.videoUrl = [NSURL URLWithString:@"http://bos.nj.bpc.baidu.com/tieba-smallvideo/11772_3c435014fb2dd9a5fd56a57cc369f6a0.mp4"];
     
     
-    _playerView = [[VPlayerView alloc] init];
+    _playerView = [[VFullScreenPlayerView alloc] init];
     [_playerView playerWithView:fatherView videoModel:videoModel];
 
     __weak typeof(self) weakSelf = self;

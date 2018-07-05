@@ -16,6 +16,7 @@
 @property (strong, nonatomic) UIView *controlView;//
 @property (nonatomic, strong) UIButton *startButton;//开始播放按钮
 @property (strong, nonatomic) UIButton *backButton;//返回按钮
+@property (strong, nonatomic) UIButton *topRightButton;//顶部右侧按钮
 @property (strong, nonatomic) UIView *bottomView;//底部视图
 @property (strong, nonatomic) UIScrollView *itemsView;//视频列表
 @property (strong, nonatomic) UILabel *timeLabel;//播放时间
@@ -29,31 +30,65 @@
 {
     self = [super init];
     if (self) {
-        [self addSubview:self.controlView];
-        [self addSubview:self.backButton];
-        [self addSubview:self.bottomView];
-        [self.controlView addSubview:self.startButton];
-        [self.controlView addSubview:self.timeLabel];
-        [self.controlView addSubview:self.totalTimeLabel];
-        [self.controlView addSubview:self.videoSlider];
-        [self.controlView addSubview:self.itemsView];
-        
+
+        [self addAllSubViews];
         //添加约束
         [self makeSubViewConstraints];
     }
     return self;
 }
 
+- (instancetype)initWithFullScreen
+{
+    self = [super init];
+    if (self) {
+        
+        [self addAllSubViews];
+        //添加约束
+        [self fullScreenMakeSubViewConstraints];
+    }
+    return self;
+}
+
+- (void)addAllSubViews
+{
+    [self addSubview:self.controlView];
+    [self addSubview:self.backButton];
+    [self addSubview:self.topRightButton];
+    [self addSubview:self.bottomView];
+    [self.controlView addSubview:self.startButton];
+    [self.controlView addSubview:self.timeLabel];
+    [self.controlView addSubview:self.totalTimeLabel];
+    [self.controlView addSubview:self.videoSlider];
+    [self.controlView addSubview:self.itemsView];
+}
+
 //添加控件约束
 - (void)makeSubViewConstraints
 {
-    CGFloat b_height = 135;
-    CGFloat items_height = 100;
+    [self constraintsWithBottomHeight:135 itemsHeight:100];
+}
+
+- (void)fullScreenMakeSubViewConstraints
+{
+    [self constraintsWithBottomHeight:0 itemsHeight:10];
+}
+
+- (void)constraintsWithBottomHeight:(CGFloat)b_height itemsHeight:(CGFloat)items_height
+{
     CGFloat silder_height = 30;
     
     //---
     [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(15);
+        make.top.equalTo(self.mas_top).offset(20);
+        make.width.mas_equalTo(60);
+        make.height.mas_equalTo(30);
+    }];
+    
+    //---
+    [self.topRightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).offset(-15);
         make.top.equalTo(self.mas_top).offset(20);
         make.width.mas_equalTo(60);
         make.height.mas_equalTo(30);
@@ -93,7 +128,7 @@
         make.left.equalTo(self.timeLabel.mas_right).offset(5);
         make.right.equalTo(self.totalTimeLabel.mas_left).offset(-5);
         //make.centerX.equalTo(weakSelf.videoProgress.mas_centerX).offset(0);
-        make.bottom.equalTo(self.mas_bottom).offset(-100);
+        make.bottom.equalTo(self.mas_bottom).offset(-items_height);
         make.height.mas_equalTo(30);
     }];
     
@@ -112,6 +147,7 @@
         make.height.mas_equalTo(items_height);
     }];
 }
+
 
 /** 播放状态 */
 - (void)v_playerPlayingState:(BOOL)state
@@ -162,6 +198,13 @@
     }
 }
 
+- (void)startButtonClick:(UIButton *)button{
+    button.selected = !button.selected;
+    if ([self.delegate respondsToSelector:@selector(v_playerPlayButtonAction)]) {
+        [self.delegate v_playerPlayButtonAction];
+    }
+}
+
 - (void)videoBackAction:(UIButton *)button
 {
     if ([self.delegate respondsToSelector:@selector(v_back)]) {
@@ -169,11 +212,9 @@
     }
 }
 
-- (void)startButtonClick:(UIButton *)button{
-    button.selected = !button.selected;
-    if ([self.delegate respondsToSelector:@selector(v_playerPlayButtonAction)]) {
-        [self.delegate v_playerPlayButtonAction];
-    }
+- (void)topRightButonAction:(UIButton *)button
+{
+    
 }
 
 
@@ -193,10 +234,10 @@
         _videoSlider = [[UISlider alloc] init];
         _videoSlider.minimumValue = 0;
         _videoSlider.maximumValue = 1;
-        _videoSlider.enabled = NO;
-        //[_videoSlider addTarget:self action:@selector(sliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
-        //[_videoSlider addTarget:self action:@selector(sliderTouchChange:) forControlEvents:UIControlEventValueChanged];
-        //[_videoSlider addTarget:self action:@selector(sliderTouchEnd:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+        _videoSlider.enabled = YES;
+        [_videoSlider addTarget:self action:@selector(sliderTouchBegan:) forControlEvents:UIControlEventTouchDown];
+        [_videoSlider addTarget:self action:@selector(sliderTouchChange:) forControlEvents:UIControlEventValueChanged];
+        [_videoSlider addTarget:self action:@selector(sliderTouchEnd:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
     }
     return _videoSlider;
 }
@@ -210,6 +251,17 @@
         [_backButton addTarget:self action:@selector(videoBackAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _backButton;
+}
+
+- (UIButton *)topRightButton
+{
+    if (!_topRightButton) {
+        _topRightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_topRightButton setTitle:@"Setting" forState:UIControlStateNormal];
+        [_topRightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_topRightButton addTarget:self action:@selector(topRightButonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _topRightButton;
 }
 
 - (UIButton *)startButton
@@ -232,7 +284,7 @@
 {
     if (!_bottomView) {
         _bottomView = [[UIView alloc] init];
-        _bottomView.backgroundColor = [UIColor lightGrayColor];
+        _bottomView.backgroundColor = [UIColor clearColor];
         _bottomView.alpha = 0.5;
     }
     return _bottomView;
@@ -242,7 +294,7 @@
 {
     if (!_itemsView) {
         _itemsView = [[UIScrollView alloc] init];
-        _itemsView.backgroundColor = [UIColor lightGrayColor];
+        _itemsView.backgroundColor = [UIColor clearColor];
     }
     return _itemsView;
 }
