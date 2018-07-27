@@ -7,11 +7,14 @@
 //
 
 #import "BBPlayerViewController.h"
+#import "AliyunPlayerView.h"
 
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
 @interface BBPlayerViewController ()
 
-@property (strong, nonatomic) VFullScreenPlayerView *playerView;
+@property (strong, nonatomic) AliyunPlayerView *playerView;
 
 @end
 
@@ -39,13 +42,15 @@
         make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
     
-    VPlayerModel *videoModel = [[VPlayerModel alloc] init];
-    videoModel.title = @"电影鉴赏";
-    videoModel.videoUrl = [NSURL URLWithString:@"http://bos.nj.bpc.baidu.com/tieba-smallvideo/11772_3c435014fb2dd9a5fd56a57cc369f6a0.mp4"];
+//    VPlayerModel *videoModel = [[VPlayerModel alloc] init];
+//    videoModel.title = @"电影鉴赏";
+//    videoModel.videoUrl = [NSURL URLWithString:@"https://baby-1253952110.cosbj.myqcloud.com/%5B%E8%B4%9D%E7%93%A6%E5%84%BF%E6%AD%8C%5D%E5%B0%8F%E6%98%9F%E6%98%9F.mp4"];
+//
     
-    
-    _playerView = [[VFullScreenPlayerView alloc] init];
-    [_playerView playerWithView:fatherView videoModel:videoModel];
+    NSURL *url = [NSURL URLWithString:@"https://baby-1253952110.cosbj.myqcloud.com/%5B%E8%B4%9D%E7%93%A6%E5%84%BF%E6%AD%8C%5D%E5%B0%8F%E6%98%9F%E6%98%9F.mp4"];
+    _playerView = [[AliyunPlayerView alloc] initWithFrame:CGRectMake(0, 0, kScreenHeight, kScreenWidth) url:url];
+    [_playerView play];
+    [self.view addSubview:_playerView];
 
     __weak typeof(self) weakSelf = self;
     _playerView.backBlock = ^(NSInteger status) {

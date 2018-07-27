@@ -30,7 +30,7 @@ static NSString * const play_url_string = @"http://clips.vorwaerts-gmbh.de/big_b
 
 - (IBAction)avPlayerVCAction:(id)sender
 {
-    [self goToTarget:@"AVPViewController" storyboard:@"Main|kAVPStoryboardId" operation:0 params:@{@"title":@"AVP"}];
+    [self goToTarget:@"AVPViewController" storyboard:@"Main|kAVPStoryboardId" operation:1 params:@{@"title":@"AVP"}];
 }
 
 - (IBAction)avPlayerCustomAction:(id)sender

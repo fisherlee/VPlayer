@@ -13,6 +13,7 @@
 		D04B48D120E0E6DB00857A07 /* ZFPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B48D020E0E6DB00857A07 /* ZFPViewController.m */; };
 		D04B48D420E0E82000857A07 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B48D320E0E82000857A07 /* BaseViewController.m */; };
 		D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */; };
+		D078FA31210B096800E332A2 /* AliyunPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D078FA30210B096800E332A2 /* AliyunPlayerView.m */; };
 		D095445E20BBF39000D557E8 /* VPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D095445D20BBF39000D557E8 /* VPlayerView.m */; };
 		D0996A2020EDB49D005666FB /* VFullScreenPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0996A1F20EDB49D005666FB /* VFullScreenPlayerView.m */; };
 		D0B24EB62092F028000E963F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B24EB52092F028000E963F /* AppDelegate.m */; };
@@ -43,6 +44,8 @@
 		D04B48D320E0E82000857A07 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		D0625BF420CF9B8F00AEFE87 /* BBPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBPlayerViewController.h; sourceTree = "<group>"; };
 		D0625BF520CF9B8F00AEFE87 /* BBPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBPlayerViewController.m; sourceTree = "<group>"; };
+		D078FA2F210B096800E332A2 /* AliyunPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerView.h; sourceTree = "<group>"; };
+		D078FA30210B096800E332A2 /* AliyunPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerView.m; sourceTree = "<group>"; };
 		D095445C20BBF39000D557E8 /* VPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPlayerView.h; sourceTree = "<group>"; };
 		D095445D20BBF39000D557E8 /* VPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VPlayerView.m; sourceTree = "<group>"; };
 		D0996A1E20EDB49D005666FB /* VFullScreenPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VFullScreenPlayerView.h; sourceTree = "<group>"; };
@@ -105,6 +108,15 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		D078FA2E210B095C00E332A2 /* AliyunPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				D078FA2F210B096800E332A2 /* AliyunPlayerView.h */,
+				D078FA30210B096800E332A2 /* AliyunPlayerView.m */,
+			);
+			path = AliyunPlayer;
+			sourceTree = "<group>";
+		};
 		D095445B20BBF36000D557E8 /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +155,7 @@
 		D0B24EB32092F028000E963F /* VPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				D078FA2E210B095C00E332A2 /* AliyunPlayer */,
 				D003178D20B7A85D00B17C8E /* Router */,
 				D0B24EED20940AF4000E963F /* hook */,
 				D095445B20BBF36000D557E8 /* Player */,
@@ -283,9 +296,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-VPlayer/Pods-VPlayer-frameworks.sh",
+				"${PODS_ROOT}/AliyunPlayer_iOS/AliyunPlayerSDK.framework",
+				"${PODS_ROOT}/AliyunPlayer_iOS/AliThirdparty.framework",
+				"${PODS_ROOT}/AliyunPlayer_iOS/AliyunVodPlayerSDK.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AliyunPlayerSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AliThirdparty.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AliyunVodPlayerSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -299,7 +319,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-VPlayer/Pods-VPlayer-resources.sh",
-				"${PODS_ROOT}/ZFPlayer/ZFPlayer/ZFPlayer.bundle",
+				"${PODS_ROOT}/AliyunPlayer_iOS/AliyunLanguageSource.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -319,6 +339,7 @@
 			files = (
 				D0625BF620CF9B8F00AEFE87 /* BBPlayerViewController.m in Sources */,
 				D04B48D420E0E82000857A07 /* BaseViewController.m in Sources */,
+				D078FA31210B096800E332A2 /* AliyunPlayerView.m in Sources */,
 				D0D63F7620E0EE950092B7B8 /* AVPViewController.m in Sources */,
 				D0996A2020EDB49D005666FB /* VFullScreenPlayerView.m in Sources */,
 				D0B24EE620932B3C000E963F /* UIViewController+Node.m in Sources */,
